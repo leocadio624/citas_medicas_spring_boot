@@ -41,6 +41,7 @@ public class Cita {
     @JsonProperty
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_consultorio")
+    @Getter @Setter
     private Consultorio consultorio;
 
 
@@ -48,6 +49,7 @@ public class Cita {
     @JsonProperty
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_medico")
+    @Getter @Setter
     private Medico medico;
 
     public Cita(){

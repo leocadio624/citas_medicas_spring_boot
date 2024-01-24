@@ -71,7 +71,7 @@
         </div>
 
         <div class = "col-lg-2 col-md-6 col-sm-12 d-flex justify-content-center">
-            <input type="datetime-local" id="fecha_cita" name="fecha_cita" value="" />
+            <input class = "form-control" type="datetime-local" id="fecha_cita" name="fecha_cita" value="" />
         </div>
 
     </div>
@@ -85,6 +85,16 @@
         </div>    
         
     </div>
+
+
+    <br>
+
+    <div class = "row">
+        <div class = "col-12 justify-content-center">
+            <div class = "container" id = "tb_citas"></div>
+        </div>
+    </div>
+
 
 
 
@@ -102,17 +112,23 @@
 
 function crearCita(){
 
+    let fecha = $('#fecha_cita').val().trim();
+    fecha = new Date(fecha);
+
+    //console.log(fecha);
+    //return;
+
+    /*
     let med = $('#cat_med').val();
     let con = $('#cat_con').val();
     let paciente = $('#paciente').val().trim();
     let fecha_cita = $('#fecha_cita').val().trim();
 
-
+    
     
     if( med ==  "-1"){
         alert("Seleccione un medico")
         return;
-
     }
 
     if( med ==  "-1"){
@@ -130,17 +146,24 @@ function crearCita(){
         alert("Ingrese la fecha de la cita")
         return;
     }
-    
+    */
 
-
+    /*
+    data:{
+        medico:1,
+        consultorio:1,
+        fecha : "2024-01-22 10:20",
+        paciente :"Lalo Bernal"
+    },
+    */
 
     $.ajax({
     url : 'http://127.0.0.1:3456/cita/save/',
     data:{
         medico:1,
         consultorio:1,
-        fecha : "2024-01-22 10:20",
-        paciente :"Lalo Bernal"
+        fecha : fecha
+        
     },
     type : 'POST',
     success : function(response){
@@ -164,4 +187,28 @@ function crearCita(){
 
 
 }
+
+    function update(){
+
+
+        $.ajax({
+        url : 'http://127.0.0.1:3456/cita/tb_citas/',
+        type : 'GET',
+        success : function(response){
+            
+            $('#tb_citas').html(response);
+
+            
+        },
+        error : function(jqXHR, status, error) {
+            
+        },
+        complete : function(jqXHR, status) {
+        }
+        });
+
+
+
+
+    }
 </script>

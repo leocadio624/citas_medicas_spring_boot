@@ -39,6 +39,8 @@ public class CitaController {
     @GetMapping("/test")
     public ResponseEntity<String> test (){
 
+
+        /* 
         Consultorio consultorio = servicio_consultorio.getConsultorio(1L);
         Consultorio consultorio2 = servicio_consultorio.getConsultorio(2L);
         Consultorio consultorio3 = servicio_consultorio.getConsultorio(3L);
@@ -51,11 +53,13 @@ public class CitaController {
         Cita cita3 = new Cita(new Date(), new Date(), "Juan Vazquez", 1,consultorio3, medico);
 
 
-        //System.out.println(servicio_cita.InsertUpdCita(cita));
 
         servicio_cita.InsertUpdCita(cita);
         servicio_cita.InsertUpdCita(cita2);
         servicio_cita.InsertUpdCita(cita3);
+        */
+        System.out.println("frfr");
+
 
 
         System.out.println("endpoint cita");
@@ -67,7 +71,7 @@ public class CitaController {
 
         //System.out.println(servicio_medico.InsertUpdMedico(new_medico));
 
-        return new ResponseEntity<>("endpoint", HttpStatus.OK);
+        return new ResponseEntity<>("cita endpoint", HttpStatus.OK);
 
 
     }
@@ -82,7 +86,7 @@ public class CitaController {
 
     /*
     * */
-    @GetMapping("/todas")
+    @GetMapping("/nueva")
     public String CC_Citas(Model modelo){
 
 
@@ -98,14 +102,47 @@ public class CitaController {
 
     }
 
+    @GetMapping("/tb_citas")
+    public String tablaConexiones(Model modelo){
+
+        List<Cita> citas = servicio_cita.findAll();
+        modelo.addAttribute("citas", citas);
+
+
+        /* 
+        for (Cita cita : citas){
+            System.out.println(cita);
+        }
+        */
+
+
+
+
+        return "tb_citas.html";
+
+
+    }
+
 
     @PostMapping("/save")
-    public ResponseEntity<Cita> save (@RequestBody RequestCita param){
+    public ResponseEntity<Cita> save (@RequestParam Long medico, @RequestParam Long consultorio, @RequestParam Date fecha){
 
+        System.out.println(medico);
+        System.out.println(consultorio);
+        System.out.println(fecha);
+
+
+        
+        
+
+        //@RequestParam String age
         Cita c = new Cita();
 
+        /*
         System.out.println(param.getMedico());
         System.out.println(param.getFecha());
+        */
+
 
         return new ResponseEntity<>(c, HttpStatus.CREATED);
 
@@ -114,12 +151,6 @@ public class CitaController {
 
 
 
-    @GetMapping("/tb_citas")
-    public String tablaConexiones(Model modelo){
 
-        return "index.html";
-
-
-    }
 
 }
