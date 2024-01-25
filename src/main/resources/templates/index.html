@@ -32,9 +32,9 @@
 
     <br>
     <br>
-    <div class = "row">
+    <div class = "row container">
 
-        <div class = "col-lg-2 col-md-6 col-sm-12 d-flex justify-content-center">
+        <div class = "col-lg-3 col-md-6 col-sm-12 d-flex justify-content-center">
             <p>Seleccione un medico</p>
         </div>
 
@@ -46,8 +46,8 @@
         </div>
 
         <br>
-        <div class = "col-lg-2 col-md-6 col-sm-12 d-flex justify-content-center">
-            <p>Seleccione un consultorio(numero-piso)</p>
+        <div class = "col-lg-3 col-md-6 col-sm-12 d-flex justify-content-center">
+            <p>Consultorio(numero-piso)</p>
         </div>
 
         <div class = "col-lg-3 col-md-6 col-sm-12">
@@ -58,19 +58,19 @@
         </div>
     </div>
 
-
-    <div class = "row">
-        <div class = "col-lg-2 col-md-6 col-sm-12 d-flex justify-content-center">
+    </br>
+    <div class = "row container">
+        <div class = "col-lg-3 col-md-6 col-sm-12 d-flex justify-content-center">
             <p>Nombre del paciente</p>
         </div>
-        <div class = "col-lg-2 col-md-6 col-sm-12 d-flex justify-content-center">
+        <div class = "col-lg-3 col-md-6 col-sm-12 d-flex justify-content-center">
             <input class = "form-control" type = "text" id = "paciente" value = "" />
         </div>
-        <div class = "col-lg-2 col-md-6 col-sm-12 d-flex justify-content-center">
+        <div class = "col-lg-3 col-md-6 col-sm-12 d-flex justify-content-center">
             <p>Fecha</p>
         </div>
 
-        <div class = "col-lg-2 col-md-6 col-sm-12 d-flex justify-content-center">
+        <div class = "col-lg-3 col-md-6 col-sm-12 d-flex justify-content-center">
             <input class = "form-control" type="datetime-local" id="fecha_cita" name="fecha_cita" value="" />
         </div>
 
@@ -107,31 +107,25 @@
     
     
     $(document).ready(function (){
-
+        update();
     });
 
 function crearCita(){
 
-    let fecha = $('#fecha_cita').val().trim();
-    fecha = new Date(fecha);
 
-    //console.log(fecha);
-    //return;
-
-    /*
     let med = $('#cat_med').val();
     let con = $('#cat_con').val();
     let paciente = $('#paciente').val().trim();
     let fecha_cita = $('#fecha_cita').val().trim();
 
     
-    
+    /*
     if( med ==  "-1"){
         alert("Seleccione un medico")
         return;
     }
 
-    if( med ==  "-1"){
+    if( con ==  "-1"){
         alert("Seleccione un consultorio")
         return;
 
@@ -146,28 +140,42 @@ function crearCita(){
         alert("Ingrese la fecha de la cita")
         return;
     }
+    
     */
-
-    /*
-    data:{
-        medico:1,
-        consultorio:1,
-        fecha : "2024-01-22 10:20",
-        paciente :"Lalo Bernal"
+   
+   
+   /*
+   data:{
+       medico:1,
+       consultorio:1,
+       fecha : "2024-01-22 10:20",
+       paciente :"Lalo Bernal"
     },
     */
+   
+    med = parseInt(med);
+    con = parseInt(con);
+    fecha_cita = new Date(fecha_cita);
+    
+
+    
+    
+
 
     $.ajax({
     url : 'http://127.0.0.1:3456/cita/save/',
     data:{
-        medico:1,
-        consultorio:1,
-        fecha : fecha
+        medico      : med,
+        consultorio : con,
+        fecha  : fecha_cita,
+        paciente    : paciente
         
     },
     type : 'POST',
     success : function(response){
-        console.log(response)
+        //console.log(response)
+        alert("Se ha agendado una nueva cita");
+        update();
         
     },
     error : function(jqXHR, status, error) {
@@ -197,6 +205,67 @@ function crearCita(){
         success : function(response){
             
             $('#tb_citas').html(response);
+
+            
+        },
+        error : function(jqXHR, status, error) {
+            
+        },
+        complete : function(jqXHR, status) {
+        }
+        });
+
+
+
+
+    }
+
+
+    function update(){
+
+
+        $.ajax({
+        url : 'http://127.0.0.1:3456/cita/tb_citas/',
+        type : 'GET',
+        success : function(response){
+            
+            $('#tb_citas').html(response);
+
+            
+        },
+        error : function(jqXHR, status, error) {
+            
+        },
+        complete : function(jqXHR, status) {
+        }
+        });
+
+
+
+
+    }
+
+
+    function borrarCita(pk){
+
+
+        /*
+        console.log(pk);
+        return;
+        ("/delete/{id}
+        */
+
+
+        $.ajax({
+        url : 'http://127.0.0.1:3456/cita/delete/'+pk,
+        type : 'DELETE',
+        success : function(response){
+            
+            //console.log(response);
+            alert(response);
+            update();
+            
+            //$('#tb_citas').html(response);
 
             
         },

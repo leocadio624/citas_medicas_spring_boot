@@ -19,7 +19,10 @@ public class CitaService {
     }
     public Cita InsertUpdCita(Cita cita){
         return cita_rep.save(cita);
-
-
     }
+
+    public void deleteCita(Long id){
+        cita_rep.deleteById(id);
+    }
+    
 }

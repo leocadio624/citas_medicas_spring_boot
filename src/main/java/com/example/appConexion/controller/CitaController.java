@@ -125,18 +125,26 @@ public class CitaController {
 
 
     @PostMapping("/save")
-    public ResponseEntity<Cita> save (@RequestParam Long medico, @RequestParam Long consultorio, @RequestParam Date fecha){
+    public ResponseEntity<Cita> save (@RequestParam Long medico, @RequestParam Long consultorio, @RequestParam Date fecha, @RequestParam String paciente){
 
+        /* 
         System.out.println(medico);
         System.out.println(consultorio);
         System.out.println(fecha);
+        System.out.println(paciente);
+        */
 
+        Consultorio con_obj = servicio_consultorio.getConsultorio(consultorio);
+        Medico med_obj = servicio_medico.getMedico(medico);
+
+    
+        Cita cita = new Cita(new Date(), fecha, paciente, 1, con_obj, med_obj);
+
+        Cita new_cita = servicio_cita.InsertUpdCita(cita);
+        
 
         
         
-
-        //@RequestParam String age
-        Cita c = new Cita();
 
         /*
         System.out.println(param.getMedico());
@@ -144,11 +152,21 @@ public class CitaController {
         */
 
 
-        return new ResponseEntity<>(c, HttpStatus.CREATED);
+        return new ResponseEntity<>(new_cita, HttpStatus.CREATED);
 
 
     }
 
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity delete(@PathVariable Long id){
+
+        servicio_cita.deleteCita(id);
+        
+
+        return new ResponseEntity("Cita eliminada!", HttpStatus.OK);
+
+    }
 
 
 
