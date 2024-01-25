@@ -1,3 +1,8 @@
+
+## Vista
+![image](https://github.com/leocadio624/citas_medicas_spring_boot/assets/51096985/87ec436e-d24c-44ba-86cd-1e98c5d5af0a)
+
+
 Para compilar y ejecutar la aplicapción es necesario:
 
 - [JDK 1.8](https://openjdk.org/)
