@@ -1,6 +1,7 @@
 
 ## Vista
-![image](https://github.com/leocadio624/citas_medicas_spring_boot/assets/51096985/87ec436e-d24c-44ba-86cd-1e98c5d5af0a)
+![image](https://github.com/leocadio624/citas_medicas_spring_boot/assets/51096985/fb8743f5-1b4a-4439-b916-da246987ae15)
+
 
 
 Para compilar y ejecutar la aplicapción es necesario:
