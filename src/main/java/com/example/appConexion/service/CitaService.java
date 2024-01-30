@@ -6,6 +6,7 @@ import com.example.appConexion.repository.CitaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -23,6 +24,13 @@ public class CitaService {
 
     public void deleteCita(Long id){
         cita_rep.deleteById(id);
+
     }
+
+    public List<Cita> findByArguments(Date fecha_consulta){
+        return cita_rep.findByArguments(fecha_consulta);
+    }
+
+
     
 }

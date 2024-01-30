@@ -110,91 +110,94 @@
         update();
     });
 
-function crearCita(){
+    function crearCita(){
 
 
-    let med = $('#cat_med').val();
-    let con = $('#cat_con').val();
-    let paciente = $('#paciente').val().trim();
-    let fecha_cita = $('#fecha_cita').val().trim();
+        let med = $('#cat_med').val();
+        let con = $('#cat_con').val();
+        let paciente = $('#paciente').val().trim();
+        let fecha_cita = $('#fecha_cita').val().trim();
 
-    
-    /*
-    if( med ==  "-1"){
-        alert("Seleccione un medico")
-        return;
-    }
-
-    if( con ==  "-1"){
-        alert("Seleccione un consultorio")
-        return;
-
-    }
-    if( paciente ==  ""){
-        alert("Ingrese el nombre del paciente")
-        return;
-
-    }
-
-    if( fecha_cita ==  ""){
-        alert("Ingrese la fecha de la cita")
-        return;
-    }
-    
-    */
-   
-   
-   /*
-   data:{
-       medico:1,
-       consultorio:1,
-       fecha : "2024-01-22 10:20",
-       paciente :"Lalo Bernal"
-    },
-    */
-   
-    med = parseInt(med);
-    con = parseInt(con);
-    fecha_cita = new Date(fecha_cita);
-    
-
-    
-    
-
-
-    $.ajax({
-    url : 'http://127.0.0.1:3456/cita/save/',
-    data:{
-        medico      : med,
-        consultorio : con,
-        fecha  : fecha_cita,
-        paciente    : paciente
         
-    },
-    type : 'POST',
-    success : function(response){
-        //console.log(response)
-        alert("Se ha agendado una nueva cita");
-        update();
+        /*
+        if( med ==  "-1"){
+            alert("Seleccione un medico")
+            return;
+        }
+
+        if( con ==  "-1"){
+            alert("Seleccione un consultorio")
+            return;
+
+        }
+        if( paciente ==  ""){
+            alert("Ingrese el nombre del paciente")
+            return;
+
+        }
+
+        if( fecha_cita ==  ""){
+            alert("Ingrese la fecha de la cita")
+            return;
+        }
         
-    },
-    error : function(jqXHR, status, error) {
+        */
+    
+    
+        /*
+        data:{
+        medico:1,
+        consultorio:1,
+        fecha : "2024-01-22 10:20",
+        paciente :"Lalo Bernal"
+        },
+        */
+    
+        med = parseInt(med);
+        con = parseInt(con);
+        fecha_cita = new Date(fecha_cita);
+
+        //console.log(fecha_cita);
+        //return;
         
-    },
-    complete : function(jqXHR, status) {
+
+        $.ajax({
+        url : 'http://127.0.0.1:3456/cita/save/',
+        data:{
+            medico      : med,
+            consultorio : con,
+            fecha  : fecha_cita,
+            paciente    : paciente
+            
+        },
+        type : 'POST',
+        success : function(response){
+            
+            alert(response);
+            update();
+
+            //console.log(response.status);
+
+            
+        },
+        error : function(jqXHR, status, error) {
+            
+        },
+        complete : function(jqXHR, status) {
+        }
+        });
+        
+
+
+
+
+        
+
+        
+
+
+
     }
-    });
-
-
-
-
-    
-
-    
-
-
-
-}
 
     function update(){
 

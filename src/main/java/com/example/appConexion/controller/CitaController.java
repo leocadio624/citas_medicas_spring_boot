@@ -11,14 +11,19 @@ import com.example.appConexion.service.ConsultorioService;
 import com.example.appConexion.service.MedicoService;
 import com.example.appConexion.service.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/cita")
@@ -125,36 +130,78 @@ public class CitaController {
 
 
     @PostMapping("/save")
-    public ResponseEntity<Cita> save (@RequestParam Long medico, @RequestParam Long consultorio, @RequestParam Date fecha, @RequestParam String paciente){
+    public ResponseEntity<String> save (@RequestParam Long medico,
+                                        @RequestParam Long consultorio,
+                                        @RequestParam Date fecha,
+                                        @RequestParam String paciente) throws ParseException {
 
-        /* 
-        System.out.println(medico);
-        System.out.println(consultorio);
-        System.out.println(fecha);
-        System.out.println(paciente);
-        */
+    //public ResponseEntity<Cita> save (@RequestParam Long medico, @RequestParam Long consultorio, @RequestParam Date fecha, @RequestParam String paciente){
+
+        //System.out.println(fecha);
+
 
         Consultorio con_obj = servicio_consultorio.getConsultorio(consultorio);
         Medico med_obj = servicio_medico.getMedico(medico);
 
-    
+        List<Cita> citas = servicio_cita.findAll();
+
+        //Date parse = fecha;
+
+
+        //SimpleDateFormat sdf_aux = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        //Date dt = sdf_aux.parse(fecha);
+        //Date dt = sdf_aux.parse(fecha.toString());
+
+        //Date fecha_parse = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(parse.toString());
+        
+        //System.out.println(fecha.getTime());
+
+
+
+        //System.out.println(fecha_parse);
+
+        //System.out.println(fecha.toString().getClass());
+        //Date end_ref = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(fecha.getClass());
+        //System.out.println(end_ref);
+
+        //Fri Jan 26 17:29:58 CST 2024
+
+        //for (Cita cita : citas)
+            //System.out.println(cita.getFecha_consulta().getTime());
+
+
+        Long consultorio_fecha = citas.stream()
+                .filter(c -> c.getConsultorio().equals(con_obj))
+                .filter(c -> c.getFecha_consulta().getTime() == fecha.getTime())
+                .count();
+
+
+        if(consultorio_fecha > 0)
+            return new ResponseEntity<>("Ya existe una cita con la fecha y consultorio asignado", HttpStatus.ALREADY_REPORTED);
+
+
+        Long medico_fecha = citas.stream()
+                .filter(c -> c.getMedico().equals(med_obj))
+                .filter(c -> c.getFecha_consulta().getTime() == fecha.getTime())
+                .count();
+
+        if(medico_fecha > 0)
+            return new ResponseEntity<>("Ya existe una cita con la fecha y medico asignado", HttpStatus.ALREADY_REPORTED);
+
+
         Cita cita = new Cita(new Date(), fecha, paciente, 1, con_obj, med_obj);
-
         Cita new_cita = servicio_cita.InsertUpdCita(cita);
-        
-
-        
-        
-
-        /*
-        System.out.println(param.getMedico());
-        System.out.println(param.getFecha());
-        */
 
 
-        return new ResponseEntity<>(new_cita, HttpStatus.CREATED);
+
+        return new ResponseEntity<>("se ha creado la cita", HttpStatus.CREATED);
 
 
+    }
+
+    private String modifyDateLayout(String inputDate) throws ParseException{
+        Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z").parse(inputDate);
+        return new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(date);
     }
 
 
